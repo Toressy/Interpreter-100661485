@@ -1,8 +1,8 @@
 expr    : KEYWORD:VAR IDENTIFIER EQ expr
         :comp_expr ((KEYWORD:AND|KEYWORD:OR) comp_expr)*
 
-comp_expr   : NOT comp_expr
-            : arith_expr ((EE|LT|GT|LTE|GTE)arith-expr)*
+comp_expr   : NOT expr
+            : arith_expr ((EE|LT|GT|LTE|GTE)arith_expr)*
 				
 arith_expr :term ((PLUS|MINUS) term)*
 

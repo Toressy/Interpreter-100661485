@@ -107,6 +107,7 @@ TT_POW			= 'POW'
 TT_EQ			= 'EQ'
 TT_LPAREN   	= 'LPAREN'
 TT_RPAREN   	= 'RPAREN'
+TT_NOT          = "NOT"
 TT_EE			= 'EE' #
 TT_NE			= 'NE' #
 TT_LT			= 'LT' #
@@ -119,8 +120,8 @@ KEYWORDS = [
 	'VAR',
 	'AND', #
 	'OR', #
-	'NOT' #
-	"YEP"
+	'NOT', #
+	"YEP",
 	"NOPE"
 ]
 
@@ -248,8 +249,9 @@ class Lexer:
 		if self.current_char == "=":
 			self.advance()
 			return Token(TT_NE, pos_start=pos_start, pos_end=self.pos), None
-		self.advance()
-		return None, ExpectedCharError(pos_start, self.pos, "'=' (after '!')")
+		
+	
+		return Token(TT_NOT, pos_start, self.pos), None 
 	
 
 	def make_equals(self):
@@ -396,6 +398,13 @@ class Parser:
 				"Expected '+', '-', '*', '/' or '^'"
 			))
 		return res
+	def parse_comp_expr(self):
+		if self.current_token.type == TT_NOT:  
+			self.advance()
+			node = self.parse_expr()
+			return UnaryOpNode(TT_NOT, node)
+		return self.parse_arith_expr()
+
 
 	###################################
 
@@ -440,7 +449,7 @@ class Parser:
 		res = ParseResult()
 		tok = self.current_tok
 
-		if tok.type in (TT_PLUS, TT_MINUS):
+		if tok.type in (TT_PLUS, TT_MINUS, TT_NOT):
 			res.register_advancement()
 			self.advance()
 			factor = res.register(self.factor())
@@ -763,11 +772,28 @@ class Interpreter:
 			return res.failure(error)
 		else:
 			return res.success(result.set_pos(node.pos_start, node.pos_end))
+	def evaluate_not(self, value):
+		"""Handles NOT (!) operation for different types."""
+		if isinstance(value, Number):  # ✅ Fix: Convert Number to Boolean
+			return Number(0 if value.value else 1) 
+		elif isinstance(value, bool):  # Boolean inversion
+			return not value
+		elif isinstance(value, str):  # Custom logic for 'yep' and 'nope'
+			if value.lower() == "yep":
+				return "nope"
+			elif value.lower() == "nope":
+				return "yep"
+		elif isinstance(value, (int, float)):  # Numbers: 0 is False, all else is True
+			return not bool(value)  
+		raise RuntimeError(f"Cannot apply '!' to {value}")  # Error if unsupported type
+
 
 	def visit_UnaryOpNode(self, node, context):
 		res = RTResult()
 		number = res.register(self.visit(node.node, context))
 		if res.error: return res
+		if node.op_tok.type == TT_NOT:
+			return res.success(self.evaluate_not(number))
 
 		error = None
 
