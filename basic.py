@@ -673,73 +673,21 @@ class Number:
 	def __repr__(self):
 		return str(self.value)
 	
-class Boolean:
+class Boolean(Number):  # ✅ Inherit from Number
     def __init__(self, value, pos_start=None, pos_end=None):
-        self.value = bool(value)  # Ensure it's stored as a proper boolean
-        self.pos_start = pos_start  # ✅ Store position info
-        self.pos_end = pos_end
-        self.context = None  # ✅ Store context
-
-    def set_pos(self, pos_start=None, pos_end=None):
+        super().__init__(1 if value else 0)  # ✅ Store True as 1 and False as 0
         self.pos_start = pos_start
         self.pos_end = pos_end
-        return self
-
-    def set_context(self, context=None):
-        self.context = context
-        return self
+        self.context = None
 
     def notted(self):
-        return Boolean(not self.value, self.pos_start, self.pos_end).set_context(self.context), None  
+        return Boolean(not self.value, self.pos_start, self.pos_end).set_context(self.context), None
 
     def copy(self):
-        copy = Boolean(self.value, self.pos_start, self.pos_end)
-        copy.set_context(self.context)
-        return copy
+        return Boolean(self.value, self.pos_start, self.pos_end).set_context(self.context)
 
     def __repr__(self):
         return "YEP" if self.value else "NOPE"
-	
-    
-    def get_comparison_eq(self, other):
-        if isinstance(other, (Boolean, Number)):
-            return Boolean(self.value == other.value, self.pos_start, self.pos_end).set_context(self.context), None
-        return None, RTError(self.pos_start, self.pos_end, "Invalid comparison between Boolean and non-Boolean", self.context)
-
-    def get_comparison_ne(self, other):
-        if isinstance(other, Boolean):
-            return Boolean(self.value != other.value, self.pos_start, self.pos_end).set_context(self.context), None
-        elif isinstance(other, Number):
-            return Boolean(self.value != (other.value != 0), self.pos_start, self.pos_end).set_context(self.context), None
-        return None, RTError(self.pos_start, self.pos_end, "Invalid comparison between Boolean and non-Boolean", self.context)
-
-    def get_comparison_lt(self, other):
-        if isinstance(other, Boolean):
-            return Boolean(self.value < other.value, self.pos_start, self.pos_end).set_context(self.context), None
-        elif isinstance(other, Number):
-            return Boolean(self.value < other.value, self.pos_start, self.pos_end).set_context(self.context), None
-        return None, RTError(self.pos_start, self.pos_end, "Invalid comparison", self.context)
-
-    def get_comparison_gt(self, other):
-        if isinstance(other, Boolean):
-            return Boolean(self.value > other.value, self.pos_start, self.pos_end).set_context(self.context), None
-        elif isinstance(other, Number):
-            return Boolean(self.value > other.value, self.pos_start, self.pos_end).set_context(self.context), None
-        return None, RTError(self.pos_start, self.pos_end, "Invalid comparison", self.context)
-
-    def get_comparison_lte(self, other):
-        if isinstance(other, Boolean):
-            return Boolean(self.value <= other.value, self.pos_start, self.pos_end).set_context(self.context), None
-        elif isinstance(other, Number):
-            return Boolean(self.value <= other.value, self.pos_start, self.pos_end).set_context(self.context), None
-        return None, RTError(self.pos_start, self.pos_end, "Invalid comparison", self.context)
-
-    def get_comparison_gte(self, other):
-        if isinstance(other, Boolean):
-            return Boolean(self.value >= other.value, self.pos_start, self.pos_end).set_context(self.context), None
-        elif isinstance(other, Number):
-            return Boolean(self.value >= other.value, self.pos_start, self.pos_end).set_context(self.context), None
-        return None, RTError(self.pos_start, self.pos_end, "Invalid comparison", self.context)
 
 #######################################
 # CONTEXT
