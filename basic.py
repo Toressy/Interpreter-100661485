@@ -116,14 +116,19 @@ TT_LTE			= 'LTE' #
 TT_GTE			= 'GTE' #
 TT_EOF			= 'EOF'
 
+
 KEYWORDS = [
 	'VAR',
-	'AND', #
-	'OR', #
-	'NOT', #
-	"YEP",
-	"NOPE"
+	'AND',
+	'OR',
+	'NOT',
 ]
+
+BOOLEAN_KEYWORDS = {
+    "YEP": "BOOLEAN_TRUE",  # ✅ Define "YEP" as a Boolean True token
+    "NOPE": "BOOLEAN_FALSE"  # ✅ Define "NOPE" as a Boolean False token
+}
+
 
 class Token:
 	def __init__(self, type_, value=None, pos_start=None, pos_end=None):
@@ -240,7 +245,10 @@ class Lexer:
 		while self.current_char != None and self.current_char in LETTERS_DIGITS + '_':
 			id_str += self.current_char
 			self.advance()
-
+			
+		if id_str in BOOLEAN_KEYWORDS:
+			return Token(BOOLEAN_KEYWORDS[id_str], id_str, pos_start, self.pos)
+    
 		tok_type = TT_KEYWORD if id_str in KEYWORDS else TT_IDENTIFIER
 		return Token(tok_type, id_str, pos_start, self.pos)
 	def make_not_equals(self):
@@ -416,6 +424,13 @@ class Parser:
 			res.register_advancement()
 			self.advance()
 			return res.success(NumberNode(tok))
+		
+
+		elif tok.type in ("BOOLEAN_TRUE", "BOOLEAN_FALSE"):  # ✅ Recognize Booleans
+			res.register_advancement()
+			self.advance()
+			return res.success(Boolean(tok.value == "YEP"))  # Convert "YEP" to True, "NOPE" to False
+		
 
 		elif tok.type == TT_IDENTIFIER:
 			res.register_advancement()
@@ -614,40 +629,39 @@ class Number:
 		
 	def get_comparison_eq(self, other):
 		if isinstance(other, Number):
-			return Number("yep" if self.value == other.value else "nope").set_context(self.context), None
+			return Boolean(self.value == other.value, self.pos_start, self.pos_end).set_context(self.context), None
 
 	def get_comparison_ne(self, other):
 		if isinstance(other, Number):
-			return Number("yep" if self.value != other.value else "nope").set_context(self.context), None
+			return Boolean(self.value != other.value, self.pos_start, self.pos_end).set_context(self.context), None
 
 	def get_comparison_lt(self, other):
 		if isinstance(other, Number):
-			return Number("yep" if self.value < other.value else "nope").set_context(self.context), None
-
+			return Boolean(self.value < other.value, self.pos_start, self.pos_end).set_context(self.context), None
+		
 	def get_comparison_gt(self, other):
 		if isinstance(other, Number):
-			return Number("yep" if self.value > other.value else "nope").set_context(self.context), None
+			return Boolean(self.value > other.value, self.pos_start, self.pos_end).set_context(self.context), None
 
 	def get_comparison_lte(self, other):
 		if isinstance(other, Number):
-			return Number("yep" if self.value <= other.value else "nope").set_context(self.context), None
+			return Boolean(self.value <= other.value, self.pos_start, self.pos_end).set_context(self.context), None
 
 	def get_comparison_gte(self, other):
 		if isinstance(other, Number):
-			return Number("yep" if self.value >= other.value else "nope").set_context(self.context), None
+			return Boolean(self.value >= other.value, self.pos_start, self.pos_end).set_context(self.context), None
 		
 	def anded_by(self, other):
 		if isinstance(other, Number):
-			return Number("yep" if self.value and other.value else "nope").set_context(self.context), None
+			return Boolean(self.value and other.value, self.pos_start, self.pos_end).set_context(self.context), None
 
 	def ored_by(self, other):
 		if isinstance(other, Number):
-			return Number("yep" if self.value or other.value else "nope").set_context(self.context), None
+			return Boolean(self.value or other.value, self.pos_start, self.pos_end).set_context(self.context), None
 
 	def notted(self):
-		return Number("yep" if self.value == 0 else "nope").set_context(self.context), None
+		return Boolean(self.value == 0, self.pos_start, self.pos_end).set_context(self.context), None
 
-	
 	
 
 	def copy(self):
@@ -658,6 +672,74 @@ class Number:
 	
 	def __repr__(self):
 		return str(self.value)
+	
+class Boolean:
+    def __init__(self, value, pos_start=None, pos_end=None):
+        self.value = bool(value)  # Ensure it's stored as a proper boolean
+        self.pos_start = pos_start  # ✅ Store position info
+        self.pos_end = pos_end
+        self.context = None  # ✅ Store context
+
+    def set_pos(self, pos_start=None, pos_end=None):
+        self.pos_start = pos_start
+        self.pos_end = pos_end
+        return self
+
+    def set_context(self, context=None):
+        self.context = context
+        return self
+
+    def notted(self):
+        return Boolean(not self.value, self.pos_start, self.pos_end).set_context(self.context), None  
+
+    def copy(self):
+        copy = Boolean(self.value, self.pos_start, self.pos_end)
+        copy.set_context(self.context)
+        return copy
+
+    def __repr__(self):
+        return "YEP" if self.value else "NOPE"
+	
+    
+    def get_comparison_eq(self, other):
+        if isinstance(other, (Boolean, Number)):
+            return Boolean(self.value == other.value, self.pos_start, self.pos_end).set_context(self.context), None
+        return None, RTError(self.pos_start, self.pos_end, "Invalid comparison between Boolean and non-Boolean", self.context)
+
+    def get_comparison_ne(self, other):
+        if isinstance(other, Boolean):
+            return Boolean(self.value != other.value, self.pos_start, self.pos_end).set_context(self.context), None
+        elif isinstance(other, Number):
+            return Boolean(self.value != (other.value != 0), self.pos_start, self.pos_end).set_context(self.context), None
+        return None, RTError(self.pos_start, self.pos_end, "Invalid comparison between Boolean and non-Boolean", self.context)
+
+    def get_comparison_lt(self, other):
+        if isinstance(other, Boolean):
+            return Boolean(self.value < other.value, self.pos_start, self.pos_end).set_context(self.context), None
+        elif isinstance(other, Number):
+            return Boolean(self.value < other.value, self.pos_start, self.pos_end).set_context(self.context), None
+        return None, RTError(self.pos_start, self.pos_end, "Invalid comparison", self.context)
+
+    def get_comparison_gt(self, other):
+        if isinstance(other, Boolean):
+            return Boolean(self.value > other.value, self.pos_start, self.pos_end).set_context(self.context), None
+        elif isinstance(other, Number):
+            return Boolean(self.value > other.value, self.pos_start, self.pos_end).set_context(self.context), None
+        return None, RTError(self.pos_start, self.pos_end, "Invalid comparison", self.context)
+
+    def get_comparison_lte(self, other):
+        if isinstance(other, Boolean):
+            return Boolean(self.value <= other.value, self.pos_start, self.pos_end).set_context(self.context), None
+        elif isinstance(other, Number):
+            return Boolean(self.value <= other.value, self.pos_start, self.pos_end).set_context(self.context), None
+        return None, RTError(self.pos_start, self.pos_end, "Invalid comparison", self.context)
+
+    def get_comparison_gte(self, other):
+        if isinstance(other, Boolean):
+            return Boolean(self.value >= other.value, self.pos_start, self.pos_end).set_context(self.context), None
+        elif isinstance(other, Number):
+            return Boolean(self.value >= other.value, self.pos_start, self.pos_end).set_context(self.context), None
+        return None, RTError(self.pos_start, self.pos_end, "Invalid comparison", self.context)
 
 #######################################
 # CONTEXT
@@ -725,6 +807,12 @@ class Interpreter:
 
 		value = value.copy().set_pos(node.pos_start, node.pos_end)
 		return res.success(value)
+	
+
+	def visit_Boolean(self, node, context):
+		return RTResult().success(
+        Boolean(node.value, node.pos_start, node.pos_end).set_context(context)
+    )
 
 	def visit_VarAssignNode(self, node, context):
 		res = RTResult()
@@ -736,6 +824,7 @@ class Interpreter:
 		return res.success(value)
 
 	def visit_BinOpNode(self, node, context):
+	
 		res = RTResult()
 		left = res.register(self.visit(node.left_node, context))
 		if res.error: return res
@@ -772,30 +861,26 @@ class Interpreter:
 			return res.failure(error)
 		else:
 			return res.success(result.set_pos(node.pos_start, node.pos_end))
+		
+
+
 	def evaluate_not(self, value):
-		"""Handles NOT (!) operation for different types."""
-		if isinstance(value, Number):  # ✅ Fix: Convert Number to Boolean
-			return Number(0 if value.value else 1) 
-		elif isinstance(value, bool):  # Boolean inversion
-			return not value
-		elif isinstance(value, str):  # Custom logic for 'yep' and 'nope'
-			if value.lower() == "yep":
-				return "nope"
-			elif value.lower() == "nope":
-				return "yep"
-		elif isinstance(value, (int, float)):  # Numbers: 0 is False, all else is True
-			return not bool(value)  
-		raise RuntimeError(f"Cannot apply '!' to {value}")  # Error if unsupported type
+		if isinstance(value, Boolean):  
+			return Boolean(not value.value)  # ✅ Flip Boolean value
+		elif isinstance(value, Number):  
+			return Boolean(not bool(value.value))  # Convert Number to Boolean
+		raise RuntimeError(f"Cannot apply '!' to {value}")  
 
 
 	def visit_UnaryOpNode(self, node, context):
 		res = RTResult()
 		number = res.register(self.visit(node.node, context))
 		if res.error: return res
+		error = None
 		if node.op_tok.type == TT_NOT:
 			return res.success(self.evaluate_not(number))
 
-		error = None
+		
 
 		if node.op_tok.type == TT_MINUS:
 			number, error = number.multed_by(Number(-1))
@@ -806,6 +891,10 @@ class Interpreter:
 			return res.failure(error)
 		else:
 			return res.success(number.set_pos(node.pos_start, node.pos_end))
+		
+
+	
+
 
 #######################################
 #######################################
@@ -814,8 +903,8 @@ class Interpreter:
 
 global_symbol_table = SymbolTable()
 global_symbol_table.set("nada", Number(0))
-global_symbol_table.set("yep", Number(1))
-global_symbol_table.set("nope", Number(0))
+global_symbol_table.set("YEP", Number(1))
+global_symbol_table.set("NOPE", Number(0))
 
 def run(fn, text):
 	# Generate tokens

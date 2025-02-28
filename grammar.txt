@@ -14,4 +14,5 @@ factor	: (PLUS|MINUS) factor
 power		: atom (POW factor)*
 
 atom 		: INT|FLOAT|IDENTIFIER
+            : BOOLEAN 
 				: LPAREN expr RPAREN
