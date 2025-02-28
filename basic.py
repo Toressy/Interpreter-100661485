@@ -120,6 +120,8 @@ KEYWORDS = [
 	'AND', #
 	'OR', #
 	'NOT' #
+	"YEP"
+	"NOPE"
 ]
 
 class Token:
@@ -603,38 +605,38 @@ class Number:
 		
 	def get_comparison_eq(self, other):
 		if isinstance(other, Number):
-			return Number((self.value == other.value)).set_context(self.context), None
+			return Number("yep" if self.value == other.value else "nope").set_context(self.context), None
 
 	def get_comparison_ne(self, other):
 		if isinstance(other, Number):
-			return Number((self.value != other.value)).set_context(self.context), None
+			return Number("yep" if self.value != other.value else "nope").set_context(self.context), None
 
 	def get_comparison_lt(self, other):
 		if isinstance(other, Number):
-			return Number((self.value < other.value)).set_context(self.context), None
+			return Number("yep" if self.value < other.value else "nope").set_context(self.context), None
 
 	def get_comparison_gt(self, other):
 		if isinstance(other, Number):
-			return Number((self.value > other.value)).set_context(self.context), None
+			return Number("yep" if self.value > other.value else "nope").set_context(self.context), None
 
 	def get_comparison_lte(self, other):
 		if isinstance(other, Number):
-			return Number((self.value <= other.value)).set_context(self.context), None
+			return Number("yep" if self.value <= other.value else "nope").set_context(self.context), None
 
 	def get_comparison_gte(self, other):
 		if isinstance(other, Number):
-			return Number((self.value >= other.value)).set_context(self.context), None
+			return Number("yep" if self.value >= other.value else "nope").set_context(self.context), None
 		
 	def anded_by(self, other):
 		if isinstance(other, Number):
-			return Number((self.value and other.value)).set_context(self.context), None
+			return Number("yep" if self.value and other.value else "nope").set_context(self.context), None
 
 	def ored_by(self, other):
 		if isinstance(other, Number):
-			return Number((self.value or other.value)).set_context(self.context), None
+			return Number("yep" if self.value or other.value else "nope").set_context(self.context), None
 
 	def notted(self):
-		return Number(1 if self.value == 0 else 0).set_context(self.context), None
+		return Number("yep" if self.value == 0 else "nope").set_context(self.context), None
 
 	
 	
@@ -785,7 +787,9 @@ class Interpreter:
 #######################################
 
 global_symbol_table = SymbolTable()
-global_symbol_table.set("null", Number(0))
+global_symbol_table.set("nada", Number(0))
+global_symbol_table.set("yep", Number(1))
+global_symbol_table.set("nope", Number(0))
 
 def run(fn, text):
 	# Generate tokens
