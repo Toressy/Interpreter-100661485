@@ -1638,11 +1638,18 @@ class BuiltInFunction(BaseFunction):
     def execute_print_ret(self, exec_ctx):
         return RTResult().success(String(str(exec_ctx.symbol_table.get('value'))))
     execute_print_ret.arg_names = ['value']
-    
+	
     def execute_input(self, exec_ctx):
         text = input()
         return RTResult().success(String(text))
     execute_input.arg_names = []
+
+    
+    def execute_input_str(self, exec_ctx):
+        prompt = exec_ctx.symbol_table.get("prompt")
+        text = input(str(prompt) if prompt else "")
+        return RTResult().success(String(text))
+    execute_input_str.arg_names = ["prompt"]
 
     def execute_input_int(self, exec_ctx):
         while True:
@@ -1749,6 +1756,7 @@ class BuiltInFunction(BaseFunction):
 BuiltInFunction.print       = BuiltInFunction("print")
 BuiltInFunction.print_ret   = BuiltInFunction("print_ret")
 BuiltInFunction.input       = BuiltInFunction("input")
+BuiltInFunction.input_str   = BuiltInFunction("input_str")
 BuiltInFunction.input_int   = BuiltInFunction("input_int")
 BuiltInFunction.clear       = BuiltInFunction("clear")
 BuiltInFunction.is_number   = BuiltInFunction("is_number")
@@ -2043,6 +2051,7 @@ global_symbol_table.set("MATH_PI", Number.math_PI)
 global_symbol_table.set("PRINT", BuiltInFunction.print)
 global_symbol_table.set("PRINT_RET", BuiltInFunction.print_ret)
 global_symbol_table.set("INPUT", BuiltInFunction.input)
+global_symbol_table.set("INPUT_STR", BuiltInFunction.input_str)
 global_symbol_table.set("INPUT_INT", BuiltInFunction.input_int)
 global_symbol_table.set("CLEAR", BuiltInFunction.clear)
 global_symbol_table.set("CLS", BuiltInFunction.clear)
