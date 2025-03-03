@@ -1,10 +1,12 @@
-expr        : KEYWORD:VAR IDENTIFIER EQ expr
-            :comp_expr ((KEYWORD:AND|KEYWORD:OR) comp_expr)*
+statements  : NEWLINE* expr (NEWLINE+ expr)* NEWLINE*
 
-comp_expr   : NOT expr
-            : arith_expr ((EE|LT|GT|LTE|GTE)arith_expr)*
+expr        : KEYWORD:VAR IDENTIFIER EQ expr
+            :comp-expr ((KEYWORD:AND|KEYWORD:OR) comp-expr)*
+
+comp-expr   : NOT expr
+            : arith-expr ((EE|LT|GT|LTE|GTE)arith-expr)*
 				
-arith_expr  :term ((PLUS|MINUS) term)*
+arith-expr  :term ((PLUS|MINUS) term)*
 
 term        : factor ((MUL|DIV) factor)*
 
@@ -27,15 +29,28 @@ atom 		: INT|FLOAT|STRING|IDENTIFIER
 
 list-expr   : LSQUARE (expr (COMMA expr)*)? RSQUARE
 
-if-expr			: KEYWORD:IF expr KEYWORD:THEN expr
-				(KEYWORD:ELIF expr KEYWORD:THEN expr)*
-				(KEYWORD:ELSE expr)?
+if-expr     : KEYWORD:IF expr KEYWORD:THEN
+              (expr if-expr-b|if-expr-c?)
+            | (NEWLINE statements KEYWORD:END|if-expr-b|if-expr-c)
 
-for-expr		: KEYWORD:FOR IDENTIFIER EQ expr KEYWORD:TO expr 
-							(KEYWORD:STEP expr)? KEYWORD:THEN expr
+if-expr-b   : KEYWORD:ELIF expr KEYWORD:THEN
+              (expr if-expr-b|if-expr-c?)
+            | (NEWLINE statements KEYWORD:END|if-expr-b|if-expr-c)
 
-while-expr	: KEYWORD:WHILE expr KEYWORD:THEN expr
+if-expr-c   : KEYWORD:ELSE
+              expr
+            | (NEWLINE statements KEYWORD:END)
 
-func-def		: KEYWORD:FUN IDENTIFIER?
-				LPAREN (IDENTIFIER (COMMA IDENTIFIER)*)? RPAREN
-				ARROW expr
+for-expr    : KEYWORD:FOR IDENTIFIER EQ expr KEYWORD:TO expr 
+              (KEYWORD:STEP expr)? KEYWORD:THEN
+              expr
+            | (NEWLINE statements KEYWORD:END)
+
+while-expr  : KEYWORD:WHILE expr KEYWORD:THEN
+              expr
+            | (NEWLINE statements KEYWORD:END)
+
+func-def    : KEYWORD:FUN IDENTIFIER?
+              LPAREN (IDENTIFIER (COMMA IDENTIFIER)*)? RPAREN
+              (ARROW expr)
+            | (NEWLINE statements KEYWORD:END)
