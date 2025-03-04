@@ -953,12 +953,17 @@ class Parser:
                     self.current_tok.pos_start, self.current_tok.pos_end,
                     f"Expected 'end'"
                     ))
+			
+			res.register_advancement()
+			self.advance()
+			
+			return res.success(ForNode(var_name, start_value, end_value, step_value, body, True))
 
 
 		body = res.register(self.expr())
 		if res.error: return res
 
-		return res.success(ForNode(var_name, start_value, end_value, step_value, body))
+		return res.success(ForNode(var_name, start_value, end_value, step_value, body, False))
 
 	def while_expr(self):
 		res = ParseResult()
