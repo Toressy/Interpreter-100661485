@@ -1426,7 +1426,7 @@ class Number(Value):
 Number.null = Number(0)
 Number.false = Number(0)
 Number.true = Number(1)
-Number.math_PI = Number(math.pi)
+Number.math_pi = Number(math.pi)
 
 class Boolean(Number):  # ✅ Inherit from Number
     def __init__(self, value, pos_start=None, pos_end=None):
@@ -2052,7 +2052,7 @@ global_symbol_table = SymbolTable()
 global_symbol_table.set("null", Number.null)
 global_symbol_table.set("true", Number.true)
 global_symbol_table.set("false", Number.false)
-global_symbol_table.set("MATH_PI", Number.math_PI)
+global_symbol_table.set("math_pi", Number.math_pi)
 global_symbol_table.set("print", BuiltInFunction.print)
 global_symbol_table.set("print_ret", BuiltInFunction.print_ret)
 global_symbol_table.set("input", BuiltInFunction.input)
