@@ -122,10 +122,10 @@ TT_GT			= 'GT' #
 TT_LTE			= 'LTE' #
 TT_GTE			= 'GTE' #
 TT_EOF			= 'EOF'
-TT_COMMA			= 'COMMA'
-TT_ARROW			= 'ARROW'
+TT_COMMA		= 'COMMA'
+TT_ARROW		= 'ARROW'
 TT_NEWLINE		= 'NEWLINE'
-TT_EOF				= 'EOF'
+TT_EOF			= 'EOF'
 
 
 KEYWORDS = [
@@ -2064,9 +2064,9 @@ global_symbol_table.set("is_num", BuiltInFunction.is_number)
 global_symbol_table.set("is_str", BuiltInFunction.is_string)
 global_symbol_table.set("is_list", BuiltInFunction.is_list)
 global_symbol_table.set("is_fun", BuiltInFunction.is_function)
-global_symbol_table.set("APPEND", BuiltInFunction.append)
-global_symbol_table.set("POP", BuiltInFunction.pop)
-global_symbol_table.set("EXTEND", BuiltInFunction.extend)
+global_symbol_table.set("append", BuiltInFunction.append)
+global_symbol_table.set("pop", BuiltInFunction.pop)
+global_symbol_table.set("extend", BuiltInFunction.extend)
 
 def run(fn, text):
 	# Generate tokens
