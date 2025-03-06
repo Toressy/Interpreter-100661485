@@ -382,7 +382,7 @@ class Lexer:
 
 		while self.current_char != '\n':
 			self.advance()
-			
+
 		self.advance()
 
 
@@ -1439,6 +1439,8 @@ class Number(Value):
 	def get_comparison_eq(self, other):
 		if isinstance(other, Number):
 			return Boolean(self.value == other.value, self.pos_start, self.pos_end).set_context(self.context), None
+		elif isinstance(other, String):  
+			return Boolean(self.value == other.value, self.pos_start, self.pos_end).set_context(self.context), None
 		else:
 			return None, Value.illegal_operation(self, other)
 
@@ -1446,6 +1448,8 @@ class Number(Value):
 
 	def get_comparison_ne(self, other):
 		if isinstance(other, Number):
+			return Boolean(self.value != other.value, self.pos_start, self.pos_end).set_context(self.context), None
+		elif isinstance(other, String): 
 			return Boolean(self.value != other.value, self.pos_start, self.pos_end).set_context(self.context), None
 		else:
 			return None, Value.illegal_operation(self, other)
@@ -1547,6 +1551,10 @@ class String(Value):
 	def added_to(self, other):
 		if isinstance(other, String):
 			return String(self.value + other.value).set_context(self.context), None
+		
+		elif isinstance(other, Number):  
+			return String(self.value + str(other.value)).set_context(self.context), None
+
 		else:
 			return None, Value.illegal_operation(self, other)
 
@@ -2012,6 +2020,7 @@ class Interpreter:
 		if res.should_return(): return res
 		right = res.register(self.visit(node.right_node, context))
 		if res.should_return(): return res
+
 
 		if node.op_tok.type == TT_PLUS:
 			result, error = left.added_to(right)
