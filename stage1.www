@@ -1,0 +1,14 @@
+print("Basic Calculator 0-20%")
+print("Simple arithmetic")
+set x =: "1 - 2                 = " + (1-2)
+print(x)
+set x =: "2.5 + 2.5 - 1.25      = " + (2.5 + 2.5 - 1.25)
+print(x)
+set x =: "(10 * 2) / 6          = " + ((10 * 2) / 6)
+print(x)
+set x =: "8.5 / (2 * 9) - -3    = " + (8.5 / (2 * 9) - -3)
+print(x)
+
+print("Exponentiation")
+set x =: "2^^3 = " + (2 ^^ 3) + "using ^^ for power"
+print(x)

@@ -1,0 +1,39 @@
+# This is a very useful piece of software
+
+print("Basic Calculator")
+print("Simple arithmetic")
+set x =: "1 - 2                 = " + (1-2)
+print(x)
+set x =: "2.5 + 2.5 - 1.25      = " + (2.5 + 2.5 - 1.25)
+print(x)
+set x =: "(10 * 2) / 6          = " + ((10 * 2) / 6)
+print(x)
+set x =: "8.5 / (2 * 9) - -3    = " + (8.5 / (2 * 9) - -3)
+print(x)
+
+
+print("Boolean Logic")
+set x =: "true == false         => " + (true == false)
+print(x)
+print(true == false)
+
+set list_2 =: [true == false]
+
+
+set i =: 0
+set a =: []
+keep i < 10 do;
+    set i =: i + 1;
+    check i == 4 do continue;
+    check i == 8 do break;
+    set a =: a + i;
+end
+print(i)
+print(a)
+
+set is_running =: true
+set shopping_list =: "milk"
+set len =: 0
+print(is_running == true and len < 5)
+
+
