@@ -7,7 +7,6 @@ print(x)
 set x =: "'10 corgis' != '10' + 'corgis' ==> " + ("10 corgis" != "10" + "corgis")
 print(x)
 
-# 6. Escape sequences
-print("Line1\nLine2")    
-set x =: "false == 'false' ==> " + (false == "false")
+print("Escape sequences")
+set x =: "Line1\nLine2"
 print(x)

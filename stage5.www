@@ -1,0 +1,7 @@
+print("while loop")
+set counter = 0
+keep counter < 3 do
+  print("Counter: " + counter)
+  set counter = counter + 1
+end
+# Expected: "Counter: 0", "Counter: 1", "Counter: 2"

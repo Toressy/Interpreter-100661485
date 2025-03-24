@@ -1,0 +1,15 @@
+# Variable assignment/printing
+print("Control flow (60-80%)")
+print("Variable assignment/printing")
+set quickMaths =: 9 + 10
+print(quickMaths)                # Expected: 19
+
+set floatTest =: 1.0
+set floatTest =: floatTest + 5
+print(floatTest)                 # Expected: 6.0
+
+# Type coercion (if supported)
+print("Type coercion")
+set stringCatTest =: "10 corgis"
+set stringCatTest =: stringCatTest + 5 + " more corgis"
+print(stringCatTest)

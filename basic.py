@@ -293,14 +293,14 @@ class Lexer:
 		while self.current_char != None and (self.current_char != '"' or escape_character):
 			if escape_character:
 				string += escape_characters.get(self.current_char, self.current_char)
+				escape_character = False
 			else:
 				if self.current_char == '\\':
 					escape_character = True
 				else:
 					string += self.current_char
+				
 			self.advance()
-			escape_character = False
-		
 		self.advance()
 		return Token(TT_STRING, string, pos_start, self.pos)
     
@@ -1460,11 +1460,11 @@ class Number(Value):
 
 	def get_comparison_ne(self, other):
 		if isinstance(other, Number):
-			return Boolean(self.value != other.value, self.pos_start, self.pos_end).set_context(self.context), None
+			return Boolean(self.value != other.value).set_context(self.context), None
 		elif isinstance(other, Boolean):
-			return Boolean((self.value != 0) != other.value, self.pos_start, self.pos_end).set_context(self.context), None
+			return Boolean((self.value != 0) != other.value).set_context(self.context), None
 		elif isinstance(other, String): 
-			return Boolean(self.value != other.value, self.pos_start, self.pos_end).set_context(self.context), None
+			return Boolean(self.value != other.value).set_context(self.context), None
 		else:
 			return None, Value.illegal_operation(self, other)
 
@@ -1472,9 +1472,9 @@ class Number(Value):
 
 	def get_comparison_lt(self, other):
 		if isinstance(other, Number):
-			return Boolean(self.value < other.value, self.pos_start, self.pos_end).set_context(self.context), None
+			return Boolean(self.value < other.value).set_context(self.context), None
 		elif isinstance(other, Boolean):
-			return Boolean((self.value != 0) < other.value, self.pos_start, self.pos_end).set_context(self.context), None
+			return Boolean((self.value != 0) < other.value).set_context(self.context), None
 		else:
 			return None, Value.illegal_operation(self, other)
 
@@ -1482,9 +1482,9 @@ class Number(Value):
 		
 	def get_comparison_gt(self, other):
 		if isinstance(other, Number):
-			return Boolean(self.value > other.value, self.pos_start, self.pos_end).set_context(self.context), None
+			return Boolean(self.value > other.value).set_context(self.context), None
 		elif isinstance(other, Boolean):
-			return Boolean((self.value != 0) > other.value, self.pos_start, self.pos_end).set_context(self.context), None
+			return Boolean((self.value != 0) > other.value).set_context(self.context), None
 		else:
 			return None, Value.illegal_operation(self, other)
 
@@ -1492,9 +1492,9 @@ class Number(Value):
 
 	def get_comparison_lte(self, other):
 		if isinstance(other, Number):
-			return Boolean(self.value <= other.value, self.pos_start, self.pos_end).set_context(self.context), None
+			return Boolean(self.value <= other.value).set_context(self.context), None
 		elif isinstance(other, Boolean):
-			return Boolean((self.value != 0) <= other.value, self.pos_start, self.pos_end).set_context(self.context), None
+			return Boolean((self.value != 0) <= other.value).set_context(self.context), None
 		else:
 			return None, Value.illegal_operation(self, other)
 
@@ -1502,9 +1502,9 @@ class Number(Value):
 
 	def get_comparison_gte(self, other):
 		if isinstance(other, Number):
-			return Boolean(self.value >= other.value, self.pos_start, self.pos_end).set_context(self.context), None
+			return Boolean(self.value >= other.value).set_context(self.context), None
 		elif isinstance(other, Boolean):
-			return Boolean((self.value != 0) >= other.value, self.pos_start, self.pos_end).set_context(self.context), None
+			return Boolean((self.value != 0) >= other.value).set_context(self.context), None
 		else:
 			return None, Value.illegal_operation(self, other)
 
@@ -1512,9 +1512,9 @@ class Number(Value):
 		
 	def anded_by(self, other):
 		if isinstance(other, Number):
-			return Boolean(self.value and other.value, self.pos_start, self.pos_end).set_context(self.context), None
+			return Boolean(self.value and other.value).set_context(self.context), None
 		elif isinstance(other, Boolean):
-			return Boolean((self.value != 0) and other.value, self.pos_start, self.pos_end).set_context(self.context), None
+			return Boolean((self.value != 0) and other.value).set_context(self.context), None
 		else:
 			return None, Value.illegal_operation(self, other)
 
@@ -1522,9 +1522,9 @@ class Number(Value):
 
 	def ored_by(self, other):
 		if isinstance(other, Number):
-			return Boolean(self.value or other.value, self.pos_start, self.pos_end).set_context(self.context), None
+			return Boolean(self.value or other.value).set_context(self.context), None
 		elif isinstance(other, Boolean):
-			return Boolean((self.value != 0) or other.value, self.pos_start, self.pos_end).set_context(self.context), None
+			return Boolean((self.value != 0) or other.value).set_context(self.context), None
 		else:
 			return None, Value.illegal_operation(self, other)
 
@@ -1568,43 +1568,43 @@ class Boolean(Value):
 		
     def get_comparison_ne(self, other):
         if isinstance(other, Boolean):
-            return Boolean(self.value != other.value, self.pos_start, self.pos_end).set_context(self.context), None
+            return Boolean(self.value != other.value).set_context(self.context), None
         elif isinstance(other, Number):
             # Compare boolean with number (true=1, false=0)
-            return Boolean(self.value != (other.value != 0), self.pos_start, self.pos_end).set_context(self.context), None
+            return Boolean(self.value != (other.value != 0)).set_context(self.context), None
         else:
             return None, Value.illegal_operation(self, other)
 		
     def get_comparison_lt(self, other):
         if isinstance(other, Boolean):
-            return Boolean(self.value < other.value, self.pos_start, self.pos_end).set_context(self.context), None
+            return Boolean(self.value < other.value).set_context(self.context), None
         elif isinstance(other, Number):
             # Compare boolean with number (true=1, false=0)
-            return Boolean(self.value < (other.value != 0), self.pos_start, self.pos_end).set_context(self.context), None
+            return Boolean(self.value < (other.value != 0)).set_context(self.context), None
         else:
             return None, Value.illegal_operation(self, other)
 		
     def get_comparison_gt(self, other):
         if isinstance(other, Boolean):
-            return Boolean(self.value > other.value, self.pos_start, self.pos_end).set_context(self.context), None
+            return Boolean(self.value > other.value).set_context(self.context), None
         elif isinstance(other, Number):
             # Compare boolean with number (true=1, false=0)
-            return Boolean(self.value > (other.value != 0), self.pos_start, self.pos_end).set_context(self.context), None
+            return Boolean(self.value > (other.value != 0)).set_context(self.context), None
         else:
             return None, Value.illegal_operation(self, other)
 		
     def get_comparison_lte(self, other):
         if isinstance(other, Boolean):
-            return Boolean(self.value <= other.value, self.pos_start, self.pos_end).set_context(self.context), None
+            return Boolean(self.value <= other.value).set_context(self.context), None
         elif isinstance(other, Number):
             # Compare boolean with number (true=1, false=0)
-            return Boolean(self.value <= (other.value != 0), self.pos_start, self.pos_end).set_context(self.context), None
+            return Boolean(self.value <= (other.value != 0)).set_context(self.context), None
         else:
             return None, Value.illegal_operation(self, other)
 
     def get_comparison_gte(self, other):
         if isinstance(other, Boolean):
-            return Boolean(self.value >= other.value, self.pos_start, self.pos_end).set_context(self.context), None
+            return Boolean(self.value >= other.value).set_context(self.context), None
         elif isinstance(other, Number):
             # Compare boolean with number (true=1, false=0)
             return Boolean(self.value >= (other.value != 0)).set_context(self.context), None
@@ -1613,25 +1613,25 @@ class Boolean(Value):
 		
     def anded_by(self, other):
         if isinstance(other, Boolean):
-            return Boolean(self.value and other.value, self.pos_start, self.pos_end).set_context(self.context), None
+            return Boolean(self.value and other.value).set_context(self.context), None
         elif isinstance(other, Number):
             # Compare boolean with number (true=1, false=0)
-            return Boolean(self.value and (other.value != 0), self.pos_start, self.pos_end).set_context(self.context), None
+            return Boolean(self.value and (other.value != 0)).set_context(self.context), None
         else:
             return None, Value.illegal_operation(self, other)
 		
     def ored_by(self, other):
         if isinstance(other, Boolean):
-            return Boolean(self.value or other.value, self.pos_start, self.pos_end).set_context(self.context), None
+            return Boolean(self.value or other.value).set_context(self.context), None
         elif isinstance(other, Number):
             # Compare boolean with number (true=1, false=0)
-            return Boolean(self.value or (other.value != 0), self.pos_start, self.pos_end).set_context(self.context), None
+            return Boolean(self.value or (other.value != 0)).set_context(self.context), None
         else:
             return None, Value.illegal_operation(self, other)
 
 
     def notted(self):
-        return Boolean(not self.value, self.pos_start, self.pos_end).set_context(self.context), None
+        return Boolean(not self.value).set_context(self.context), None
 
     def copy(self):
         return Boolean(self.value, self.pos_start, self.pos_end).set_context(self.context)
