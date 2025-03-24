@@ -1,0 +1,13 @@
+print("Text Values 40-50%")
+print("String operations")
+set x =: "'hello' + ' ' + 'world' ==> " + ("hello" + " " + "world")
+print(x)
+set x =: "'foo' + 'bar' == 'foobar ==> " + ("foo" + "bar" == "foobar")
+print(x)
+set x =: "'10 corgis' != '10' + 'corgis' ==> " + ("10 corgis" != "10" + "corgis")
+print(x)
+
+# 6. Escape sequences
+print("Line1\nLine2")    
+set x =: "false == 'false' ==> " + (false == "false")
+print(x)
