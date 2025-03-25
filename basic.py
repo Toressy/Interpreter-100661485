@@ -1886,6 +1886,50 @@ class BuiltInFunction(BaseFunction):
         return RTResult().success(Number(number))
     execute_input_int.arg_names = []
 	
+    def execute_to_int(self, exec_ctx):
+        value = exec_ctx.symbol_table.get("value")
+    
+        if not isinstance(value, String):
+            return RTResult().failure(RTError(
+				self.pos_start, self.pos_end,
+				"Argument must be string",
+				exec_ctx
+			))
+    
+        try:
+            number = int(value.value)
+        except ValueError:
+            return RTResult().failure(RTError(
+				self.pos_start, self.pos_end,
+				f"Could not convert '{value.value}' to integer",
+				exec_ctx
+			))
+    
+        return RTResult().success(Number(number))
+    execute_to_int.arg_names = ["value"]
+
+    def execute_to_float(self, exec_ctx):
+        value = exec_ctx.symbol_table.get("value")
+    
+        if not isinstance(value, String):
+            return RTResult().failure(RTError(
+				self.pos_start, self.pos_end,
+				"Argument must be string",
+				exec_ctx
+			))
+    
+        try:
+            number = float(value.value)
+        except ValueError:
+            return RTResult().failure(RTError(
+				self.pos_start, self.pos_end,
+				f"Could not convert '{value.value}' to float",
+				exec_ctx
+			))
+    
+        return RTResult().success(Number(number))
+    execute_to_float.arg_names = ["value"]
+
     def execute_clear(self, exec_ctx):
         os.system('cls' if os.name == 'nt' else 'cls') 
         return RTResult().success(Number.null)
@@ -2031,6 +2075,8 @@ BuiltInFunction.print_ret   = BuiltInFunction("print_ret")
 BuiltInFunction.input       = BuiltInFunction("input")
 BuiltInFunction.input_str   = BuiltInFunction("input_str")
 BuiltInFunction.input_int   = BuiltInFunction("input_int")
+BuiltInFunction.to_int		= BuiltInFunction("to_int")
+BuiltInFunction.to_float 	= BuiltInFunction("to_float")
 BuiltInFunction.clear       = BuiltInFunction("clear")
 BuiltInFunction.is_number   = BuiltInFunction("is_number")
 BuiltInFunction.is_string   = BuiltInFunction("is_string")
@@ -2360,6 +2406,8 @@ global_symbol_table.set("print_ret", BuiltInFunction.print_ret)
 global_symbol_table.set("input", BuiltInFunction.input)
 global_symbol_table.set("input_str", BuiltInFunction.input_str)
 global_symbol_table.set("input_int", BuiltInFunction.input_int)
+global_symbol_table.set("to_int", BuiltInFunction.to_int)
+global_symbol_table.set("to_float", BuiltInFunction.to_float)
 global_symbol_table.set("clear", BuiltInFunction.clear)
 global_symbol_table.set("cls", BuiltInFunction.clear)
 global_symbol_table.set("is_num", BuiltInFunction.is_number)

@@ -1,12 +1,15 @@
 print("Text Values 40-50%")
 print("String operations")
-set x =: "'hello' + ' ' + 'world' ==> " + ("hello" + " " + "world")
+set x =: "\"hello\" + \" \" + \"world\" ==> " + ("hello" + " " + "world")
 print(x)
-set x =: "'foo' + 'bar' == 'foobar ==> " + ("foo" + "bar" == "foobar")
+set x =: "\"foo' + \"bar\" == \"foobar\" ==> " + ("foo" + "bar" == "foobar")
 print(x)
-set x =: "'10 corgis' != '10' + 'corgis' ==> " + ("10 corgis" != "10" + "corgis")
+set x =: "\"10 corgis\" != \"10\" + \"corgis\" ==> " + ("10 corgis" != "10" + "corgis")
 print(x)
 
 print("Escape sequences")
 set x =: "Line1\nLine2"
 print(x)
+print("Text with \\backslashed\\")
+print("Text with \"quotes\"")
+print("Text \nwith \nnew \nlines \nand \ttab")

@@ -1,0 +1,27 @@
+set lst =: [1, "two", false]
+append(lst, 3)
+print(lst)                       # Expected: [1, "two", false, 3]
+
+print(lst + 4)
+print(lst * [3, 4, 5] )
+print(len(lst))  
+print(lst - 1)  
+print(len(lst)) 
+print(lst -- 1)  
+
+
+build add(a, b) -> a + b
+print(add(2, 3))
+
+print("Factorial function")
+set num =: input_str("Input number: ")
+set num =: to_int(num)
+build factorial(n)
+  check n <= 1 do
+    return 1
+  otherwise
+    return n * factorial(n - 1)
+    end
+end
+print(factorial(num))              # Expected: 120
+

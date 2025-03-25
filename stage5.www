@@ -1,7 +1,46 @@
-print("while loop")
-set counter = 0
+print("For loop (walk)")
+walk i =: 0 thru 10 skip 1 do
+  print("For loop: " + i)
+end
+
+print("XXXXXXXXXXXXXXXXXX")
+
+print("While loop")
+set counter =: 0
 keep counter < 3 do
   print("Counter: " + counter)
-  set counter = counter + 1
+  set counter =: counter + 1
 end
-# Expected: "Counter: 0", "Counter: 1", "Counter: 2"
+
+print("XXXXXXXXXXXXXXXXXX")
+
+set i =: 0
+set a =: []
+keep i < 10 do;
+    set i =: i + 1;
+    check i == 4 do continue;
+    check i == 8 do break;
+    set a =: a + i;
+end
+print(i)
+print(a)
+
+print("XXXXXXXXXXXXXXXXXX")
+
+print("If-else")
+set age =: 20
+check age >= 18 do
+    check age == 19 do
+        print("AGE = 19")
+    otherwise
+        print("Adult")
+    end
+otherwise
+  print("Minor")
+end
+
+print("XXXXXXXXXXXXXXXXXX")
+
+print("User input")
+set name =: input_str("Enter your name: ")
+print("Hello " + name)

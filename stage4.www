@@ -13,3 +13,7 @@ print("Type coercion")
 set stringCatTest =: "10 corgis"
 set stringCatTest =: stringCatTest + 5 + " more corgis"
 print(stringCatTest)
+
+set errorTest =: 5
+set errorTest =: errorTest + “insert string here”
+print(errorTest)
