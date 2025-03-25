@@ -1,7 +1,7 @@
 import basic
 
 while True:
-    text = input('catlang > ')
+    text = input('www > ')
     if text.strip() == "": continue
     if text == "exit": break
         

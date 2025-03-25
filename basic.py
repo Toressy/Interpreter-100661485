@@ -1443,8 +1443,6 @@ class Number(Value):
 			return Number(self.value ** other.value).set_context(self.context), None
 		else:
 			return None, Value.illegal_operation(self, other)
-
-	
 		
 	def get_comparison_eq(self, other):
 		if isinstance(other, Number):
@@ -1456,8 +1454,6 @@ class Number(Value):
 		else:
 			return None, Value.illegal_operation(self, other)
 
-	
-
 	def get_comparison_ne(self, other):
 		if isinstance(other, Number):
 			return Boolean(self.value != other.value).set_context(self.context), None
@@ -1467,7 +1463,6 @@ class Number(Value):
 			return Boolean(self.value != other.value).set_context(self.context), None
 		else:
 			return None, Value.illegal_operation(self, other)
-
 	
 
 	def get_comparison_lt(self, other):
@@ -1479,7 +1474,6 @@ class Number(Value):
 			return None, Value.illegal_operation(self, other)
 
 	
-		
 	def get_comparison_gt(self, other):
 		if isinstance(other, Number):
 			return Boolean(self.value > other.value).set_context(self.context), None
@@ -1488,7 +1482,6 @@ class Number(Value):
 		else:
 			return None, Value.illegal_operation(self, other)
 
-	
 
 	def get_comparison_lte(self, other):
 		if isinstance(other, Number):
@@ -1498,8 +1491,6 @@ class Number(Value):
 		else:
 			return None, Value.illegal_operation(self, other)
 
-	
-
 	def get_comparison_gte(self, other):
 		if isinstance(other, Number):
 			return Boolean(self.value >= other.value).set_context(self.context), None
@@ -1508,8 +1499,6 @@ class Number(Value):
 		else:
 			return None, Value.illegal_operation(self, other)
 
-	
-		
 	def anded_by(self, other):
 		if isinstance(other, Number):
 			return Boolean(self.value and other.value).set_context(self.context), None
@@ -1517,8 +1506,6 @@ class Number(Value):
 			return Boolean((self.value != 0) and other.value).set_context(self.context), None
 		else:
 			return None, Value.illegal_operation(self, other)
-
-	
 
 	def ored_by(self, other):
 		if isinstance(other, Number):
@@ -1528,13 +1515,8 @@ class Number(Value):
 		else:
 			return None, Value.illegal_operation(self, other)
 
-	
-
 	def notted(self):
 		return Boolean(self.value == 0, self.pos_start, self.pos_end).set_context(self.context), None
-	
-
-	
 
 	def copy(self):
 		copy = Number(self.value)
@@ -1549,7 +1531,6 @@ class Number(Value):
 		return str(self.value)
 
 Number.null = Number(0)
-
 Number.math_pi = Number(math.pi)
 
 class Boolean(Value):  
@@ -1561,7 +1542,6 @@ class Boolean(Value):
         if isinstance(other, Boolean):
             return Boolean(self.value == other.value).set_context(self.context), None
         elif isinstance(other, Number):
-            # Compare boolean with number (true=1, false=0)
             return Boolean(self.value == (other.value != 0)).set_context(self.context), None
         else:
             return None, Value.illegal_operation(self, other)
@@ -1570,7 +1550,6 @@ class Boolean(Value):
         if isinstance(other, Boolean):
             return Boolean(self.value != other.value).set_context(self.context), None
         elif isinstance(other, Number):
-            # Compare boolean with number (true=1, false=0)
             return Boolean(self.value != (other.value != 0)).set_context(self.context), None
         else:
             return None, Value.illegal_operation(self, other)
@@ -1579,7 +1558,6 @@ class Boolean(Value):
         if isinstance(other, Boolean):
             return Boolean(self.value < other.value).set_context(self.context), None
         elif isinstance(other, Number):
-            # Compare boolean with number (true=1, false=0)
             return Boolean(self.value < (other.value != 0)).set_context(self.context), None
         else:
             return None, Value.illegal_operation(self, other)
@@ -1588,7 +1566,6 @@ class Boolean(Value):
         if isinstance(other, Boolean):
             return Boolean(self.value > other.value).set_context(self.context), None
         elif isinstance(other, Number):
-            # Compare boolean with number (true=1, false=0)
             return Boolean(self.value > (other.value != 0)).set_context(self.context), None
         else:
             return None, Value.illegal_operation(self, other)
@@ -1597,7 +1574,6 @@ class Boolean(Value):
         if isinstance(other, Boolean):
             return Boolean(self.value <= other.value).set_context(self.context), None
         elif isinstance(other, Number):
-            # Compare boolean with number (true=1, false=0)
             return Boolean(self.value <= (other.value != 0)).set_context(self.context), None
         else:
             return None, Value.illegal_operation(self, other)
@@ -1606,7 +1582,6 @@ class Boolean(Value):
         if isinstance(other, Boolean):
             return Boolean(self.value >= other.value).set_context(self.context), None
         elif isinstance(other, Number):
-            # Compare boolean with number (true=1, false=0)
             return Boolean(self.value >= (other.value != 0)).set_context(self.context), None
         else:
             return None, Value.illegal_operation(self, other)
@@ -1615,7 +1590,6 @@ class Boolean(Value):
         if isinstance(other, Boolean):
             return Boolean(self.value and other.value).set_context(self.context), None
         elif isinstance(other, Number):
-            # Compare boolean with number (true=1, false=0)
             return Boolean(self.value and (other.value != 0)).set_context(self.context), None
         else:
             return None, Value.illegal_operation(self, other)
@@ -1624,10 +1598,12 @@ class Boolean(Value):
         if isinstance(other, Boolean):
             return Boolean(self.value or other.value).set_context(self.context), None
         elif isinstance(other, Number):
-            # Compare boolean with number (true=1, false=0)
             return Boolean(self.value or (other.value != 0)).set_context(self.context), None
         else:
             return None, Value.illegal_operation(self, other)
+		
+    def is_true(self):
+        return self.value 
 
 
     def notted(self):
@@ -2195,9 +2171,9 @@ class Interpreter:
 
 	def evaluate_not(self, value):
 		if isinstance(value, Boolean):  
-			return Boolean(not value.value)  # ✅ Flip Boolean value
+			return Boolean(not value.value)  
 		elif isinstance(value, Number):  
-			return Boolean(not bool(value.value))  # Convert Number to Boolean
+			return Boolean(not bool(value.value))  
 		raise RuntimeError(f"Cannot apply '!' to {value}")  
 
 	def visit_UnaryOpNode(self, node, context):
@@ -2205,11 +2181,9 @@ class Interpreter:
 		number = res.register(self.visit(node.node, context))
 		if res.should_return(): return res
 		error = None
+
 		if node.op_tok.type == TT_NOT:
 			return res.success(self.evaluate_not(number))
-
-		
-
 		if node.op_tok.type == TT_MINUS:
 			number, error = number.multed_by(Number(-1))
 		elif node.op_tok.matches(TT_KEYWORD, 'not'):
