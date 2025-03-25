@@ -25,3 +25,17 @@ build factorial(n)
 end
 print(factorial(num))              # Expected: 120
 
+print("Return/continue/break")
+build test_loop()
+  walk i =: 0 thru 5 do
+    check i == 2 do
+      continue
+      end
+    check i == 4 do
+      break
+      end
+    print(i)
+  end
+end
+test_loop() 
+
