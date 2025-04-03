@@ -1,3 +1,4 @@
+print("List implementation")
 set lst =: [1, "two", false]
 append(lst, 3)
 print(lst)                       # Expected: [1, "two", false, 3]
@@ -9,7 +10,7 @@ print(lst - 1)
 print(len(lst)) 
 print(lst -- 1)  
 
-
+print("Add function")
 build add(a, b) -> a + b
 print(add(2, 3))
 
@@ -25,8 +26,11 @@ build factorial(n)
 end
 print(factorial(num))              # Expected: 120
 
-print("Return/continue/break")
+print("Return/continue/break and color local variable")
+set age =: 20
 build test_loop()
+  set age =: 10;
+  set color =: 3;
   walk i =: 0 thru 5 do
     check i == 2 do
       continue
@@ -38,4 +42,6 @@ build test_loop()
   end
 end
 test_loop() 
+print("age = " + age)
+print("color = " + color)
 
