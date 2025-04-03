@@ -11,7 +11,7 @@ print(len(lst))
 print(lst -- 1)  
 
 print("Add function")
-build add(a, b) -> a + b
+build add(a, b) -> a + b         
 print(add(2, 3))
 
 print("Factorial function")
@@ -26,11 +26,8 @@ build factorial(n)
 end
 print(factorial(num))              # Expected: 120
 
-print("Return/continue/break and color local variable")
-set age =: 20
+print("Return/continue/break")
 build test_loop()
-  set age =: 10;
-  set color =: 3;
   walk i =: 0 thru 5 do
     check i == 2 do
       continue
@@ -42,6 +39,16 @@ build test_loop()
   end
 end
 test_loop() 
-print("age = " + age)
-print("color = " + color)
+
+
+print("Global and local variables")
+set global_var =: 10 
+build test()
+    set local_var =: 5 
+    print("Local var inside function: " + local_var)  
+    print("Global var inside function: " + global_var) 
+end
+
+test()
+print("Local var outside of the function: " + local_var) 
 
