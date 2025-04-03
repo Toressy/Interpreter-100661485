@@ -1472,7 +1472,11 @@ class Number(Value):
 		elif isinstance(other, String):  
 			return Boolean(self.value == other.value).set_context(self.context), None
 		else:
-			return None, Value.illegal_operation(self, other)
+			return None, RTError(
+                self.pos_start, other.pos_end,
+                f"Cannot compare a Number ({self.value}) with a {type(other).__name__} ({other.value}) using '<'",
+                self.context
+			)
 
 	def get_comparison_ne(self, other):
 		if isinstance(other, Number):
@@ -1482,7 +1486,11 @@ class Number(Value):
 		elif isinstance(other, String): 
 			return Boolean(self.value != other.value).set_context(self.context), None
 		else:
-			return None, Value.illegal_operation(self, other)
+			return None, RTError(
+                self.pos_start, other.pos_end,
+                f"Cannot compare a Number ({self.value}) with a {type(other).__name__} ({other.value}) using '<'",
+                self.context
+			)
 	
 
 	def get_comparison_lt(self, other):
@@ -1491,7 +1499,11 @@ class Number(Value):
 		elif isinstance(other, Boolean):
 			return Boolean((self.value != 0) < other.value).set_context(self.context), None
 		else:
-			return None, Value.illegal_operation(self, other)
+			return None, RTError(
+                self.pos_start, other.pos_end,
+                f"Cannot compare a Number ({self.value}) with a {type(other).__name__} ({other.value}) using '<'",
+                self.context
+			)
 
 	
 	def get_comparison_gt(self, other):
@@ -1500,7 +1512,11 @@ class Number(Value):
 		elif isinstance(other, Boolean):
 			return Boolean((self.value != 0) > other.value).set_context(self.context), None
 		else:
-			return None, Value.illegal_operation(self, other)
+			return None, RTError(
+                self.pos_start, other.pos_end,
+                f"Cannot compare a Number ({self.value}) with a {type(other).__name__} ({other.value}) using '<'",
+                self.context
+			)
 
 
 	def get_comparison_lte(self, other):
@@ -1509,7 +1525,11 @@ class Number(Value):
 		elif isinstance(other, Boolean):
 			return Boolean((self.value != 0) <= other.value).set_context(self.context), None
 		else:
-			return None, Value.illegal_operation(self, other)
+			return None, RTError(
+                self.pos_start, other.pos_end,
+                f"Cannot compare a Number ({self.value}) with a {type(other).__name__} ({other.value}) using '<'",
+                self.context
+			)
 
 	def get_comparison_gte(self, other):
 		if isinstance(other, Number):
@@ -1517,7 +1537,11 @@ class Number(Value):
 		elif isinstance(other, Boolean):
 			return Boolean((self.value != 0) >= other.value).set_context(self.context), None
 		else:
-			return None, Value.illegal_operation(self, other)
+			return None, RTError(
+                self.pos_start, other.pos_end,
+                f"Cannot compare a Number ({self.value}) with a {type(other).__name__} ({other.value}) using '<'",
+                self.context
+			)
 
 	def anded_by(self, other):
 		if isinstance(other, Number):
@@ -1525,7 +1549,11 @@ class Number(Value):
 		elif isinstance(other, Boolean):
 			return Boolean((self.value != 0) and other.value).set_context(self.context), None
 		else:
-			return None, Value.illegal_operation(self, other)
+			return None, RTError(
+                self.pos_start, other.pos_end,
+                f"Cannot compare a Number ({self.value}) with a {type(other).__name__} ({other.value}) using '<'",
+                self.context
+			)
 
 	def ored_by(self, other):
 		if isinstance(other, Number):
@@ -1533,7 +1561,11 @@ class Number(Value):
 		elif isinstance(other, Boolean):
 			return Boolean((self.value != 0) or other.value).set_context(self.context), None
 		else:
-			return None, Value.illegal_operation(self, other)
+			return None, RTError(
+                self.pos_start, other.pos_end,
+                f"Cannot compare a Number ({self.value}) with a {type(other).__name__} ({other.value}) using '<'",
+                self.context
+			)
 
 	def notted(self):
 		return Boolean(self.value == 0, self.pos_start, self.pos_end).set_context(self.context), None
@@ -1602,7 +1634,7 @@ class Boolean(Value):
                     'Division by zero',
                     self.context
                 )
-            return Number(int(self.value) * other.value).set_context(self.context), None
+            return Number(int(self.value) / other.value).set_context(self.context), None
         elif isinstance(other, Number):
             if other.value == 0:
                 return None, RTError(
@@ -1610,11 +1642,23 @@ class Boolean(Value):
                     'Division by zero',
                     self.context
                 )
-            return Number(int(self.value) * other.value).set_context(self.context), None
+            return Number(int(self.value) / other.value).set_context(self.context), None
         else:
             return None, RTError(
             self.pos_start, other.pos_end,
-            f"Cannot multiply a Boolean ({self.value}) by a {type(other).__name__} ({other.value})",
+            f"Cannot divide a Boolean ({self.value}) by a {type(other).__name__} ({other.value})",
+            self.context
+        )
+
+    def powed_by(self, other):
+        if isinstance(other, Boolean):
+            return Number(int(self.value) ** other.value).set_context(self.context), None
+        elif isinstance(other, Number):
+            return Number(int(self.value) ** other.value).set_context(self.context), None
+        else:
+            return None, RTError(
+            self.pos_start, other.pos_end,
+            f"Cannot raise a Boolean ({self.value}) to a {type(other).__name__} ({other.value})",
             self.context
         )
 	
@@ -1625,7 +1669,11 @@ class Boolean(Value):
         elif isinstance(other, Number):
             return Boolean(self.value == (other.value != 0)).set_context(self.context), None
         else:
-            return None, Value.illegal_operation(self, other)
+            return None, RTError(
+				self.pos_start, other.pos_end,
+				f"Cannot compare a Boolean ({self.value}) with a {type(other).__name__} ({other.value}) using '=='",
+				self.context
+			)
 		
     def get_comparison_ne(self, other):
         if isinstance(other, Boolean):
@@ -1633,7 +1681,11 @@ class Boolean(Value):
         elif isinstance(other, Number):
             return Boolean(self.value != (other.value != 0)).set_context(self.context), None
         else:
-            return None, Value.illegal_operation(self, other)
+            return None, RTError(
+				self.pos_start, other.pos_end,
+				f"Cannot compare a Boolean ({self.value}) with a {type(other).__name__} ({other.value}) using '=='",
+				self.context
+			)
 		
     def get_comparison_lt(self, other):
         if isinstance(other, Boolean):
@@ -1641,7 +1693,11 @@ class Boolean(Value):
         elif isinstance(other, Number):
             return Boolean(self.value < (other.value != 0)).set_context(self.context), None
         else:
-            return None, Value.illegal_operation(self, other)
+            return None, RTError(
+				self.pos_start, other.pos_end,
+				f"Cannot compare a Boolean ({self.value}) with a {type(other).__name__} ({other.value}) using '=='",
+				self.context
+			)
 		
     def get_comparison_gt(self, other):
         if isinstance(other, Boolean):
@@ -1649,7 +1705,11 @@ class Boolean(Value):
         elif isinstance(other, Number):
             return Boolean(self.value > (other.value != 0)).set_context(self.context), None
         else:
-            return None, Value.illegal_operation(self, other)
+            return None, RTError(
+				self.pos_start, other.pos_end,
+				f"Cannot compare a Boolean ({self.value}) with a {type(other).__name__} ({other.value}) using '=='",
+				self.context
+			)
 		
     def get_comparison_lte(self, other):
         if isinstance(other, Boolean):
@@ -1657,7 +1717,11 @@ class Boolean(Value):
         elif isinstance(other, Number):
             return Boolean(self.value <= (other.value != 0)).set_context(self.context), None
         else:
-            return None, Value.illegal_operation(self, other)
+            return None, RTError(
+				self.pos_start, other.pos_end,
+				f"Cannot compare a Boolean ({self.value}) with a {type(other).__name__} ({other.value}) using '=='",
+				self.context
+			)
 
     def get_comparison_gte(self, other):
         if isinstance(other, Boolean):
@@ -1665,7 +1729,11 @@ class Boolean(Value):
         elif isinstance(other, Number):
             return Boolean(self.value >= (other.value != 0)).set_context(self.context), None
         else:
-            return None, Value.illegal_operation(self, other)
+            return None, RTError(
+				self.pos_start, other.pos_end,
+				f"Cannot compare a Boolean ({self.value}) with a {type(other).__name__} ({other.value}) using '=='",
+				self.context
+			)
 		
     def anded_by(self, other):
         if isinstance(other, Boolean):
@@ -1673,7 +1741,11 @@ class Boolean(Value):
         elif isinstance(other, Number):
             return Boolean(self.value and (other.value != 0)).set_context(self.context), None
         else:
-            return None, Value.illegal_operation(self, other)
+            return None, RTError(
+				self.pos_start, other.pos_end,
+				f"Cannot perform 'and' between a Boolean ({self.value}) and a {type(other).__name__} ({other.value})",
+				self.context
+			)
 		
     def ored_by(self, other):
         if isinstance(other, Boolean):
@@ -1681,7 +1753,11 @@ class Boolean(Value):
         elif isinstance(other, Number):
             return Boolean(self.value or (other.value != 0)).set_context(self.context), None
         else:
-            return None, Value.illegal_operation(self, other)
+            return None, RTError(
+				self.pos_start, other.pos_end,
+				f"Cannot perform 'or' between a Boolean ({self.value}) and a {type(other).__name__} ({other.value})",
+				self.context
+			)
 		
     def is_true(self):
         return self.value 
@@ -1714,54 +1790,99 @@ class String(Value):
 		elif isinstance(other, Number):  
 			return String(self.value + str(other.value)).set_context(self.context), None
 		
-		elif isinstance(other, Boolean):  # Add this case for boolean concatenation
+		elif isinstance(other, Boolean):  
 			return String(self.value + ("true" if other.value else "false")).set_context(self.context), None
 
 		else:
-			return None, Value.illegal_operation(self, other)
+			return None, RTError(
+                self.pos_start, other.pos_end,
+                f"Cannot add a {type(other).__name__} ({other.value}) to a String (\"{self.value}\")",
+                self.context
+            )
+		
+	def subbed_by(self, other):
+		return None, RTError(
+                self.pos_start, other.pos_end,
+                f"Cannot substract a String (\"{self.value}\") by a {type(other).__name__} ({other.value})",
+                self.context
+            )
 
 	def multed_by(self, other):
 		if isinstance(other, Number):
 			return String(self.value * other.value).set_context(self.context), None
 		else:
-			return None, Value.illegal_operation(self, other)
+			return None, RTError(
+                self.pos_start, other.pos_end,
+                f"Cannot multiply a String (\"{self.value}\") by a {type(other).__name__} ({other.value})",
+                self.context
+            )
+		
+	def dived_by(self, other):
+		return None, RTError(
+                self.pos_start, other.pos_end,
+                f"Cannot divide a String (\"{self.value}\") by a {type(other).__name__} ({other.value})",
+                self.context
+            )
 		
 	def get_comparison_eq(self, other):
 		if isinstance(other, String):
 			return Boolean(self.value == other.value).set_context(self.context), None
 		else:
-			return None, Value.illegal_operation(self, other)
+			return None, RTError(
+                self.pos_start, other.pos_end,
+                f"Cannot compare a String (\"{self.value}\") with a {type(other).__name__} ({other.value}) using '=='",
+                self.context
+            )
 		
 	def get_comparison_ne(self, other):
 		if isinstance(other, String):
 			return Boolean(self.value != other.value).set_context(self.context), None
 		else:
-			return None, Value.illegal_operation(self, other)
+			return None, RTError(
+                self.pos_start, other.pos_end,
+                f"Cannot compare a String (\"{self.value}\") with a {type(other).__name__} ({other.value}) using '=='",
+                self.context
+            )
 		
 	def get_comparison_lt(self, other):
 		if isinstance(other, String):
 			return Boolean(self.value < other.value).set_context(self.context), None
 		else:
-			return None, Value.illegal_operation(self, other)
+			return None, RTError(
+                self.pos_start, other.pos_end,
+                f"Cannot compare a String (\"{self.value}\") with a {type(other).__name__} ({other.value}) using '=='",
+                self.context
+            )
 		
 	def get_comparison_gt(self, other):
 		if isinstance(other, String):
 			return Boolean(self.value > other.value).set_context(self.context), None
 		else:
-			return None, Value.illegal_operation(self, other)
+			return None, RTError(
+                self.pos_start, other.pos_end,
+                f"Cannot compare a String (\"{self.value}\") with a {type(other).__name__} ({other.value}) using '=='",
+                self.context
+            )
 		
 	def get_comparison_lte(self, other):
 		if isinstance(other, String):
 			return Boolean(self.value <= other.value).set_context(self.context), None
 		else:
-			return None, Value.illegal_operation(self, other)
+			return None, RTError(
+                self.pos_start, other.pos_end,
+                f"Cannot compare a String (\"{self.value}\") with a {type(other).__name__} ({other.value}) using '=='",
+                self.context
+            )
 		
 	def get_comparison_gte(self, other):
 		if isinstance(other, String):
 			return Boolean(self.value >= other.value).set_context(self.context), None
 		else:
-			return None, Value.illegal_operation(self, other)
-
+			return None, RTError(
+                self.pos_start, other.pos_end,
+                f"Cannot compare a String (\"{self.value}\") with a {type(other).__name__} ({other.value}) using '=='",
+                self.context
+            )
 
 	def is_true(self):
 		return len(self.value) > 0
