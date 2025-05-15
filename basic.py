@@ -99,7 +99,7 @@ class Position:
 # TOKENS
 #######################################
 
-TT_INT				= 'INT'
+TT_INT			= 'INT'
 TT_FLOAT    	= 'FLOAT'
 TT_STRING       = "STRING"
 TT_IDENTIFIER	= 'IDENTIFIER'
