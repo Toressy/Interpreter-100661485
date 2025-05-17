@@ -10,6 +10,7 @@
             color: #3e2c4f;
             margin: 0;
             padding: 0;
+            
         }
 
         header {
@@ -98,6 +99,10 @@
     </style>
 </head>
 <body>
+    <div style="position: absolute; top: 10px; left: 10px;">
+        <button onclick="showIntro()">❓ Help</button>
+    </div>
+
     <header>
         <h1>Try My Interpreter</h1>
     </header>
@@ -117,5 +122,26 @@
             </div>
         {% endif %}
     </div>
+
+    <script>
+        function showIntro() {
+            alert(`Welcome to My Interpreter! 🧠
+
+    Here's how to use it:
+    1. Write your code in the text area.
+    2. Click '✨ Run ✨' to execute.
+    3. View the result below.
+
+    Language Syntax:
+    - Use 'print("text")' to display text.
+    - Variables: let x: = 10
+    - Conditions: if x > 5 then ...
+    - Loops: repeat 3 times ...
+
+    Enjoy coding!`);
+        }
+    </script>
+
+
 </body>
 </html>
