@@ -1,1 +1,89 @@
-How to Build and Run the Interpreter ProjectThis document explains how to build and run the BASIC interpreter project from the provided source code on a virtual machine instance. The project consists of a simple interpreter written in Python that can execute a custom python-like programming language. Follow the steps below to set it up and run it.Prerequisites* Python 3.6 or higher: Ensure Python is installed on your virtual machine. You can check this by runningpython3 --versionIf Python is not installed, install it using your package manager (e.g.,Êsudo apt install python3Êon Debian/Ubuntu).* Text Editor: Any text editor (e.g.,Ênano,Êvim, or VS Code) to edit and save files.* Terminal Access: Access to a terminal to execute commands.Project FilesThe source code consists of three main components:1. main.py: The entry point of the interpreter that provides an interactive shell.2. basic.py: The core interpreter logic, including the lexer, parser, and runtime.3. strings_with_arrows.py: A utility module for displaying error messages with arrows pointing to the error location.Step-by-Step Instructions1. Prepare the Virtual Machineo Log in to your virtual machine instance via SSH or a terminal interface.o Create a working directory for the project:mkdir basic-interpretercd basic-interpreter2. Save the Source Fileso Use a text editor to create and save the following files with the provided code:* shell.py.py:*       Copy the entire content of the shell.py and paste it into this file.* basic.py:* Copy the entire content of the basic.py and paste it into this file.* strings_with_arrows.py:* Copy the entire content of the strings_with_arrows.py and paste it into this file.o Save these files in theÊbasic-interpreterÊdirectory.3. Verify File Structureo Your directory should look like this:basic-interpreter/??? shell.py??? basic.py??? strings_with_arrows.pyo Ensure all files are saved correctly by listing them:ls -l4. Run the Interpretero From theÊbasic-interpreterÊdirectory, start the interpreter by running:python3 shell.pyo You should see a prompt:Êwww >. This is the interactive shell where you can enter commands in the custom BASIC language.5. Test the Interpretero Try some example commands:* print("Hello, World!")Ê? Outputs:Ê"Hello, World!"* set x =: 5 + 3Ê? Outputs:Ê8* walk i =: 1 thru 5 do print(i)Ê? Outputs:Ê1,Ê2,Ê3,Ê4,Ê5Ê(on separate lines)* TypeÊexitÊto quit the interpreter.6. Running a Script File (Optional)o Create a script file (e.g.,Êtest.bas) with your BASIC code and copy the content of the stage1.www and paste it into this file.o Save it in the same directory, then run it using theÊrunÊfunction:python3 main.pywww > run("test.bas")o This will execute the script.Troubleshooting* Syntax Errors: If you see an error likeÊInvalid Syntax, check your input against the languageÕs syntax (e.g., useÊsetfor assignments,ÊprintÊfor output).* Module Not Found: EnsureÊbasic.pyÊandÊstrings_with_arrows.pyÊare in the same directory asÊmain.py.* Python Version: If you encounter compatibility issues, verify your Python version withÊpython3 --version.Language FeaturesThe interpreter supports:* Variables (set x =: 5)* Boolean logic* Float point numbers* Text values* Text storage* Global and local data* Arithmetic (+,Ê-,Ê*,Ê/,Ê^^Êfor power)* Conditionals (check,Êorif,Êotherwise)* Loops (walkÊfor for-loops,ÊkeepÊfor while-loops)* Functions (build)* Lists ([1, 2, 3])* Built-in functions (print,Êinput,Êlen, etc.)For more details, refer to the basic.py source code, which defines the languageÕs syntax and semantics.
+How to Build and Run the Interpreter Project
+
+This document explains how to build and run the BASIC interpreter project from the provided source code on a virtual machine instance. The project consists of a simple interpreter written in Python that can execute a custom python-like programming language. Follow the steps below to set it up and run it.
+
+Prerequisites
+* Python 3.6 or higher: Ensure Python is installed on your virtual machine. You can check this by running
+python3 --version
+If Python is not installed, install it using your package manager (e.g.,ÃŠsudo apt install python3ÃŠon Debian/Ubuntu).
+* Text Editor: Any text editor (e.g.,ÃŠnano,ÃŠvim, or VS Code) to edit and save files.
+* Terminal Access: Access to a terminal to execute commands.
+
+Project Files
+The source code consists of three main components:
+
+1. main.py: The entry point of the interpreter that provides an interactive shell.
+2. basic.py: The core interpreter logic, including the lexer, parser, and runtime.
+3. strings_with_arrows.py: A utility module for displaying error messages with arrows pointing to the error location.
+
+Step-by-Step Instructions
+1. Prepare the Virtual Machine
+  o Log in to your virtual machine instance via SSH or a terminal interface.
+  o Create a working directory for the project:
+  mkdir basic-interpreter
+  cd basic-interpreter
+
+2. Save the Source Files
+  o Use a text editor to create and save the following files with the provided code:
+  * shell.py.py:
+  *       Copy the entire content of the shell.py and paste it into this file.
+  * basic.py:
+  * Copy the entire content of the basic.py and paste it into this file.
+  * strings_with_arrows.py:
+  * Copy the entire content of the strings_with_arrows.py and paste it into this file.
+  o Save these files in the basic-interpreter directory.
+
+3. Verify File Structure
+    o Your directory should look like this:
+      basic-interpreter/
+         shell.py
+         basic.py
+         strings_with_arrows.py
+    o Ensure all files are saved correctly by listing them:
+    ls -l
+
+4. Run the Interpreter
+o From the basic-interpreter directory, start the interpreter by running:
+python3 shell.py
+o You should see a prompt: www >. This is the interactive shell where you can enter commands in the custom BASIC language.
+
+5. Test the Interpreter
+o Try some example commands:
+* print("Hello, World!")
+    Outputs:"Hello, World!"
+* set x =: 5 + 3
+    Outputs:8
+* walk i =: 1 thru 5 do print(i)
+    Outputs:   1, 
+               2, 
+               3, 
+               4, 
+               5 
+* Type "exit" to quit the interpreter.
+
+6. Running a Script File (Optional)
+  o Create a script file (e.g., test.bas) with your BASIC code and copy the content of the stage1.www and paste it into this file.
+  o Save it in the same directory, then run it using theÃŠrunÃŠfunction:
+  python3 main.py
+  www > run("test.bas")
+  o This will execute the script.
+Troubleshooting
+      * Syntax Errors: If you see an error like Invalid Syntax, check your input against the languages syntax (e.g., use setfor assignments,print for output).
+      * Module Not Found: Ensure basic.py and strings_with_arrows.py are in the same directory as main.py.
+      * Python Version: If you encounter compatibility issues, verify your Python version with python3 --version.
+Language Features
+The interpreter supports:
+      * Variables (set x =: 5)
+      * Boolean logic
+      * Float point numbers
+      * Text values
+      * Text storage
+      * Global and local data
+      * Arithmetic (+, -, *, /, ^^ for power)
+      * Conditionals (check, orif, otherwise)
+      * Loops (walk for for-loops, keep for while-loops)
+      * Functions (build)
+      * Lists ([1, 2, 3])
+      * Built-in functions (print, input, len, etc.)
+For more details, refer to the basic.py source code, which defines the languages syntax and semantics.
+
