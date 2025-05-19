@@ -125,21 +125,90 @@
 
     <script>
         function showIntro() {
-            alert(`Welcome to My Interpreter! 🧠
+    alert(`📘 Welcome to My Interpreter!
 
-    Here's how to use it:
+    🔹 HOW TO USE
     1. Write your code in the text area.
     2. Click '✨ Run ✨' to execute.
-    3. View the result below.
+    3. View the result/output below.
 
-    Language Syntax:
-    - Use 'print("text")' to display text.
-    - Variables: let x: = 10
-    - Conditions: if x > 5 then ...
-    - Loops: repeat 3 times ...
+    🔹 LANGUAGE SYNTAX
 
-    Enjoy coding!`);
-        }
+    🔸 Variables
+        set x =: 10
+
+    🔸 Data types
+        🟣 Numbers: int, float
+        🟣 Text: str
+        🟣 Boolean: true, false
+    
+    🔸 Arithmetic
+        +, -, *, /, ^^(power)
+
+    🔸 Comparison
+        ==, !=, >, <, >=, <=
+
+    🔸 Logical
+        and, or, not
+
+    🔸 Conditionals
+        check x > 5 do
+            print("Greater than 5")
+        orif x == 5 do
+            print("Exactly 5")
+        otherwise 
+            print("Less than 5")
+        end
+
+    🔸 Loops
+        print("For loop (walk)")
+        walk i =: 0 thru 10 skip 1 do
+            print("For loop: " + i)
+        end
+
+        print("While loop (keep)")
+        set counter =: 0
+        keep counter < 3 do
+            print("Counter: " + counter)
+            set counter =: counter + 1
+        end
+
+    🔸 Functions 
+        build greet(name)
+            print("Hello, " + name)
+        end
+        greet("name")
+
+    🔸 User input
+        set name =: input_str("Enter your name: ")
+        print("Hello " + name)
+
+    🔸 List
+        set lst =: [1, "two", false]
+        append(lst, 3) - Add item (3) to end
+        pop(lst, 1) - Remove and return item with index 1                 
+        lst + 4 - Add item (4) to the end and print
+        lst * [3, 4, 5] - Add list of items ([3, 4, 5]) to the end and print
+        len(lst) - Get lenth
+        lst - 1 - Remove item with index 1
+        lst - -1 - Remove item with index -1
+
+    🔸 Comments
+        # This is comment
+
+
+    🔹 CONTROL FLOW KEYWORDS
+    - check, orif, otherwise
+    - walk, thru
+    - set, build
+    - return, continue, break, skip, keep
+    - and, or, not
+
+    🧠 Tip: Use indentation or structure clearly between 'do' and 'end'.
+
+    Happy coding! 💜`);
+    }
+
     </script>
 
 

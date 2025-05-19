@@ -10,6 +10,8 @@ print(lst - 1)
 print(len(lst)) 
 print(lst -- 1)  
 
+print(math_pi)
+
 print("Add function")
 build add(a, b) -> a + b         
 print(add(2, 3))
