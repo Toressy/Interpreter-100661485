@@ -1,7 +1,9 @@
 print("List implementation")
 set lst =: [1, "two", false]
 append(lst, 3)
-print(lst)                       # Expected: [1, "two", false, 3]
+print(lst)
+print(pop(lst,1))
+print(len(lst))
 
 print(lst + 4)
 print(lst * [3, 4, 5] )
@@ -52,5 +54,18 @@ build test()
 end
 
 test()
-print("Local var outside of the function: " + local_var) 
+print("Local var outside of the function: " + local_var)
+
+print("Built-in functions")
+set x =: is_num(123)
+print(x)
+set x=: is_str("Hello, I am string")
+print(x)
+set = =: is_list(lst)
+print(x)
+print(is_fun(test))
+
+set x =: i
+set x =: input_int()
+print("Ur x is: " + x)
 
