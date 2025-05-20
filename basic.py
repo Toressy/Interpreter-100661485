@@ -2225,6 +2225,7 @@ class BuiltInFunction(BaseFunction):
         listA.elements.extend(listB.elements)
 
         return RTResult().success(Number.null)
+    execute_extend.arg_names = ["listA", "listB"]
 	
     def execute_len(self, exec_ctx):
         list_ = exec_ctx.symbol_table.get("list")
