@@ -44,3 +44,14 @@ print("XXXXXXXXXXXXXXXXXX")
 print("User input")
 set name =: input_str("Enter your name: ")
 print("Hello " + name)
+
+set num =: input_str("Input number: ")
+set num =: to_int(num)
+
+check num < 20 do
+    print("Your number is less than 20")
+orif num >= 20 and num <= 60 do
+    print("20 <= x <= 60")
+otherwise 
+    orint("Your number is greater than 60")
+end

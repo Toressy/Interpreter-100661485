@@ -1,6 +1,4 @@
-#######################################
 # IMPORTS
-#######################################
 
 from strings_with_arrows import *
 
@@ -2112,10 +2110,6 @@ class BuiltInFunction(BaseFunction):
         return RTResult().success(Number(number))
     execute_to_float.arg_names = ["value"]
 
-    def execute_clear(self, exec_ctx):
-        os.system('cls' if os.name == 'nt' else 'cls') 
-        return RTResult().success(Number.null)
-    execute_clear.arg_names = []
 
     def execute_is_number(self, exec_ctx):
         is_number = isinstance(exec_ctx.symbol_table.get("value"), Number)
@@ -2260,7 +2254,6 @@ BuiltInFunction.input_str   = BuiltInFunction("input_str")
 BuiltInFunction.input_int   = BuiltInFunction("input_int")
 BuiltInFunction.to_int		= BuiltInFunction("to_int")
 BuiltInFunction.to_float 	= BuiltInFunction("to_float")
-BuiltInFunction.clear       = BuiltInFunction("clear")
 BuiltInFunction.is_number   = BuiltInFunction("is_number")
 BuiltInFunction.is_string   = BuiltInFunction("is_string")
 BuiltInFunction.is_list     = BuiltInFunction("is_list")
@@ -2576,8 +2569,6 @@ global_symbol_table.set("input_str", BuiltInFunction.input_str)
 global_symbol_table.set("input_int", BuiltInFunction.input_int)
 global_symbol_table.set("to_int", BuiltInFunction.to_int)
 global_symbol_table.set("to_float", BuiltInFunction.to_float)
-global_symbol_table.set("clear", BuiltInFunction.clear)
-global_symbol_table.set("cls", BuiltInFunction.clear)
 global_symbol_table.set("is_num", BuiltInFunction.is_number)
 global_symbol_table.set("is_str", BuiltInFunction.is_string)
 global_symbol_table.set("is_list", BuiltInFunction.is_list)

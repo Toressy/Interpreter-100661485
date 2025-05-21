@@ -61,11 +61,4 @@ set x =: is_num(123)
 print(x)
 set x=: is_str("Hello, I am string")
 print(x)
-set = =: is_list(lst)
-print(x)
-print(is_fun(test))
-
-set x =: i
-set x =: input_int()
-print("Ur x is: " + x)
 
