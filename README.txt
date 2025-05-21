@@ -1,4 +1,4 @@
-User Guide
+## User Guide
 
 This document explains how to use the interpreter, a Python-based tool for executing a custom programming language.
 
