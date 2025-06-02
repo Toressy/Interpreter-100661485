@@ -1,8 +1,12 @@
-## User Guide
+# Custom Python Interpreter
 
+## 🚀 Introduction
+I created this custom interpreter to explore language design fundamentals and demonstrate how programming languages work under the hood. This project implements a complete interpreted language with variables, control flow, functions, and more - all built from scratch in Python.
+
+[▶️ Try the live demo](https://interpreter-3e9n.onrender.com) | [📜 Full language specification](#language-features)
 This document explains how to use the interpreter, a Python-based tool for executing a custom programming language.
 
-Getting Started
+## Getting Started
 
 1. Launch the Interpreter:  
    Navigate to the project directory and run:  
@@ -21,7 +25,7 @@ Getting Started
 4. Exit the Interpreter:  
    Type `exit` to quit.
 
-Language Features
+## Language Features
 
 * Variables: `set x =: 10`  
 * Arithmetic: `+, -, *, /, ^^` (e.g., `5 ^^ 2` for power)  
@@ -86,9 +90,9 @@ Language Features
         print("Minor")
       end
 
-www > check x > 10 do print("x is greater than 10") orif x == 10 do print("x is 10") otherwise print("x is less than 10")
-    x is 10
-    0
+      www > check x > 10 do print("x is greater than 10") orif x == 10 do print("x is 10") otherwise print("x is less than 10")
+          x is 10
+          0
 
 
 * Functions:
